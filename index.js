@@ -1,85 +1,20 @@
-#!/usr/bin/env node
+const express = require('express');
+const cors = require('cors'); // Si tu l'utilises
+const cookieParser = require('cookie-parser'); // Si tu l'utilises
+const routes = require('./routes'); // Assurez-vous que le chemin est correct
 
-/**
- * Module dependencies.
- */
+const app = express();
 
-var app = require('./app')
-var http = require('http')
+app.use(cors()); // Utilisation de CORS si nécessaire
+app.use(cookieParser()); // Utilisation de cookie-parser si nécessaire
+app.use(express.json()); // Pour le traitement des JSON
+app.use(express.urlencoded({ extended: true })); // Pour le traitement des données URL-encoded
 
-/**
- * Get port from environment and store in Express.
- */
+// Utilisation des routes
+app.use('/api', routes); // Notez que vous ajoutez un préfixe /api
 
-var port = normalizePort(process.env.PORT || '8000')
-app.set('port', port)
+const PORT = process.env.PORT || 3000;
 
-/**
- * Create HTTP server.
- */
-
-var server = http.createServer(app)
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port)
-server.on('error', onError)
-server.on('listening', onListening)
-
-/**
- * Normalize a port into a number, string, or false.
- */
-
-function normalizePort(val) {
-	var port = parseInt(val, 10)
-
-	if (isNaN(port)) {
-		// named pipe
-		return val
-	}
-
-	if (port >= 0) {
-		// port number
-		return port
-	}
-
-	return false
-}
-
-/**
- * Event listener for HTTP server "error" event.
- */
-
-function onError(error) {
-	if (error.syscall !== 'listen') {
-		throw error
-	}
-
-	var bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port
-
-	// handle specific listen errors with friendly messages
-	switch (error.code) {
-		case 'EACCES':
-			console.error(bind + ' requires elevated privileges')
-			process.exit(1)
-			break
-		case 'EADDRINUSE':
-			console.error(bind + ' is already in use')
-			process.exit(1)
-			break
-		default:
-			throw error
-	}
-}
-
-/**
- * Event listener for HTTP server "listening" event.
- */
-
-function onListening() {
-	var addr = server.address()
-	var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port
-	console.log('Listening on ' + bind);
-}
+app.listen(PORT, () => {
+    console.log(`Serveur en cours d'exécution sur le port ${PORT}`);
+});
