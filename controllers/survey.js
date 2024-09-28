@@ -1,8 +1,14 @@
-const surveyData = require('../models/survey')
+const surveyData = {
+    id: 1,
+    title: "Survey Title",
+    questions: [
+        { question: "Question 1?", options: ["Option 1", "Option 2"] },
+        // Ajoute d'autres questions ici
+    ]
+};
 
-function getSurvey() {
-	// return surveyData[questionNumber]
-	return surveyData
-}
+const getSurvey = () => {
+    return surveyData; // ou une logique pour récupérer des données réelles
+};
 
-module.exports = getSurvey
+module.exports = getSurvey;
